@@ -5,7 +5,12 @@ import {
   Category, 
   SearchResult, 
   SearchFilters,
-  PaginatedResponse 
+  PaginatedResponse,
+  Cart,
+  Wishlist,
+  Order,
+  OrderList,
+  CreateOrderData
 } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -378,3 +383,106 @@ export const mockProduct: Product = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
+
+// ============================================================================
+// Cart API Functions
+// ============================================================================
+
+/**
+ * Get the current user's cart
+ */
+export async function getCart(): Promise<Cart> {
+  return api.get<Cart>('/cart');
+}
+
+/**
+ * Add an item to the cart
+ */
+export async function addToCart(productId: string, quantity: number = 1): Promise<Cart> {
+  return api.post<Cart>('/cart/items', { productId, quantity });
+}
+
+/**
+ * Update cart item quantity
+ */
+export async function updateCartItem(productId: string, quantity: number): Promise<Cart> {
+  return api.patch<Cart>(`/cart/items/${productId}`, { quantity });
+}
+
+/**
+ * Remove an item from the cart
+ */
+export async function removeCartItem(productId: string): Promise<Cart> {
+  return api.delete<Cart>(`/cart/items/${productId}`);
+}
+
+/**
+ * Clear all items from the cart
+ */
+export async function clearCart(): Promise<void> {
+  return api.delete<void>('/cart');
+}
+
+/**
+ * Merge local cart with server cart (called after login)
+ */
+export async function mergeCart(items: { productId: string; quantity: number }[]): Promise<Cart> {
+  return api.post<Cart>('/cart/merge', { items });
+}
+
+// ============================================================================
+// Wishlist API Functions
+// ============================================================================
+
+/**
+ * Get the current user's wishlist
+ */
+export async function getWishlist(): Promise<Wishlist> {
+  return api.get<Wishlist>('/wishlist');
+}
+
+/**
+ * Add an item to the wishlist
+ */
+export async function addToWishlist(productId: string): Promise<Wishlist> {
+  return api.post<Wishlist>('/wishlist/items', { productId });
+}
+
+/**
+ * Remove an item from the wishlist
+ */
+export async function removeFromWishlist(productId: string): Promise<Wishlist> {
+  return api.delete<Wishlist>(`/wishlist/items/${productId}`);
+}
+
+/**
+ * Move an item from wishlist to cart
+ */
+export async function moveToCart(productId: string): Promise<void> {
+  return api.post<void>(`/wishlist/items/${productId}/move-to-cart`, {});
+}
+
+// ============================================================================
+// Order API Functions
+// ============================================================================
+
+/**
+ * Create a new order from the current cart
+ */
+export async function createOrder(data: CreateOrderData): Promise<Order> {
+  return api.post<Order>('/orders', data);
+}
+
+/**
+ * Get the current user's orders
+ */
+export async function getOrders(page: number = 1): Promise<OrderList> {
+  return api.get<OrderList>(`/orders?page=${page}`);
+}
+
+/**
+ * Get a specific order by ID
+ */
+export async function getOrder(orderId: string): Promise<Order> {
+  return api.get<Order>(`/orders/${orderId}`);
+}

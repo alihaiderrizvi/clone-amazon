@@ -123,9 +123,9 @@ export function useAuth() {
     if (error) throw error;
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithOAuth = async (provider: 'google' | 'github') => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider,
       options: {
         redirectTo: `${window.location.origin}/api/auth/callback`,
       },
@@ -133,11 +133,27 @@ export function useAuth() {
     if (error) throw error;
   };
 
+  const signInWithGoogle = async () => {
+    return signInWithOAuth('google');
+  };
+
+  const signInWithGithub = async () => {
+    return signInWithOAuth('github');
+  };
+
+  const getAccessToken = async (): Promise<string | null> => {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token || null;
+  };
+
   return {
     ...state,
     signIn,
     signUp,
     signOut,
+    signInWithOAuth,
     signInWithGoogle,
+    signInWithGithub,
+    getAccessToken,
   };
 }

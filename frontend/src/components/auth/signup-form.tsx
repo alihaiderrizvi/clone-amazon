@@ -1,23 +1,48 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/use-auth';
 
+interface PasswordStrength {
+  score: number;
+  label: string;
+  color: string;
+}
+
+function getPasswordStrength(password: string): PasswordStrength {
+  let score = 0;
+  
+  if (password.length >= 6) score++;
+  if (password.length >= 8) score++;
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+  if (/\d/.test(password)) score++;
+  if (/[^a-zA-Z0-9]/.test(password)) score++;
+  
+  if (score <= 1) return { score, label: 'Weak', color: 'bg-red-500' };
+  if (score <= 2) return { score, label: 'Fair', color: 'bg-orange-500' };
+  if (score <= 3) return { score, label: 'Good', color: 'bg-yellow-500' };
+  if (score <= 4) return { score, label: 'Strong', color: 'bg-green-500' };
+  return { score, label: 'Very Strong', color: 'bg-green-600' };
+}
+
 export function SignupForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const { signUp } = useAuth();
   const router = useRouter();
+
+  const passwordStrength = useMemo(() => getPasswordStrength(password), [password]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +55,11 @@ export function SignupForm() {
 
     if (password.length < 6) {
       setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (!acceptedTerms) {
+      setError('You must accept the terms and conditions');
       return;
     }
 
@@ -113,15 +143,42 @@ export function SignupForm() {
             autoComplete="email"
           />
 
-          <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="At least 6 characters"
-            required
-            autoComplete="new-password"
-          />
+          <div>
+            <Input
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="At least 6 characters"
+              required
+              autoComplete="new-password"
+            />
+            {/* Password Strength Indicator */}
+            {password && (
+              <div className="mt-2">
+                <div className="flex gap-1 mb-1">
+                  {[1, 2, 3, 4, 5].map((level) => (
+                    <div
+                      key={level}
+                      className={`h-1 flex-1 rounded-full ${
+                        level <= passwordStrength.score
+                          ? passwordStrength.color
+                          : 'bg-gray-200'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className={`text-xs ${
+                  passwordStrength.score <= 1 ? 'text-red-600' :
+                  passwordStrength.score <= 2 ? 'text-orange-600' :
+                  passwordStrength.score <= 3 ? 'text-yellow-600' :
+                  'text-green-600'
+                }`}>
+                  Password strength: {passwordStrength.label}
+                </p>
+              </div>
+            )}
+          </div>
 
           <Input
             label="Re-enter password"
@@ -132,7 +189,28 @@ export function SignupForm() {
             autoComplete="new-password"
           />
 
-          <Button type="submit" className="w-full" isLoading={isLoading}>
+          {/* Terms Acceptance */}
+          <label className="flex items-start gap-3 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              className="mt-0.5 rounded border-gray-300 text-[#FF9900] focus:ring-[#FF9900]"
+              required
+            />
+            <span className="text-gray-600">
+              I agree to the{' '}
+              <Link href="#" className="text-[#007185] hover:underline">
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link href="#" className="text-[#007185] hover:underline">
+                Privacy Policy
+              </Link>
+            </span>
+          </label>
+
+          <Button type="submit" className="w-full" isLoading={isLoading} disabled={!acceptedTerms}>
             Create your Amazon Clone account
           </Button>
         </form>

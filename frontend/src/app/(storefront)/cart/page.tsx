@@ -1,15 +1,42 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/hooks/use-cart';
+import { useAuth } from '@/hooks/use-auth';
 import { formatPrice } from '@/lib/utils';
+import * as api from '@/lib/api';
 
 export default function CartPage() {
   const { items, subtotalCents, itemCount, updateQuantity, removeItem, isLoading } = useCart();
+  const { isAuthenticated } = useAuth();
+  const [savingForLater, setSavingForLater] = useState<Set<string>>(new Set());
+
+  const handleSaveForLater = async (productId: string) => {
+    if (!isAuthenticated) {
+      // Redirect to login if not authenticated
+      window.location.href = `/login?redirectTo=/cart`;
+      return;
+    }
+
+    setSavingForLater(prev => new Set(prev).add(productId));
+    try {
+      await api.addToWishlist(productId);
+      removeItem(productId);
+    } catch (error) {
+      console.error('Error saving to wishlist:', error);
+    } finally {
+      setSavingForLater(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(productId);
+        return newSet;
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -120,8 +147,13 @@ export default function CartPage() {
                         <span className="text-gray-300">|</span>
 
                         {/* Save for Later */}
-                        <button className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline">
-                          Save for later
+                        <button
+                          onClick={() => handleSaveForLater(item.productId)}
+                          disabled={savingForLater.has(item.productId)}
+                          className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline flex items-center gap-1 disabled:opacity-50"
+                        >
+                          <Heart className="h-4 w-4" />
+                          {savingForLater.has(item.productId) ? 'Saving...' : 'Save for later'}
                         </button>
                       </div>
                     </div>

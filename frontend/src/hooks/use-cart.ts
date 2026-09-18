@@ -44,10 +44,11 @@ interface CartContextType {
   itemCount: number;
   subtotalCents: number;
   isLoading: boolean;
-  addItem: (product: ProductListItem, quantity?: number) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  removeItem: (productId: string) => void;
-  clearCart: () => void;
+  isSyncing?: boolean;
+  addItem: (product: ProductListItem, quantity?: number) => void | Promise<void>;
+  updateQuantity: (productId: string, quantity: number) => void | Promise<void>;
+  removeItem: (productId: string) => void | Promise<void>;
+  clearCart: () => void | Promise<void>;
 }
 
 // Create context (can be used by CartProvider in context/cart-context.tsx)

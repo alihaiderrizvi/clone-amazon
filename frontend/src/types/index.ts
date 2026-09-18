@@ -187,6 +187,38 @@ export interface SearchResult {
   };
 }
 
+// Wishlist types
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  product: ProductListItem;
+  addedAt: string;
+}
+
+export interface Wishlist {
+  id: string;
+  userId: string;
+  items: WishlistItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Create Order types
+export interface CreateOrderData {
+  shippingAddress: Omit<Address, 'id' | 'isDefault'>;
+  paymentMethod: 'credit_card' | 'pay_on_delivery';
+  paymentDetails?: {
+    cardLastFour?: string;
+  };
+}
+
+export interface OrderList {
+  orders: Order[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
+
 // API Response types
 export interface PaginatedResponse<T> {
   data: T[];
