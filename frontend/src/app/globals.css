@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f5f5;
+  --foreground: #0f1111;
+  --amazon-orange: #ff9900;
+  --amazon-orange-hover: #e88b00;
+  --amazon-dark: #131921;
+  --amazon-dark-secondary: #232f3e;
+  --amazon-link: #007185;
+  --amazon-link-hover: #c7511f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  outline: 2px solid var(--amazon-orange);
+  outline-offset: 2px;
+}
+
+/* Selection styles */
+::selection {
+  background: rgba(255, 153, 0, 0.3);
+}
+
+/* Remove default button styles */
+button {
+  cursor: pointer;
+}
+
+/* Placeholder image fallback */
+img[src="/placeholder-product.png"] {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+}
