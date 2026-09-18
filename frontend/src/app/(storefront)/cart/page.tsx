@@ -64,7 +64,7 @@ export default function CartPage() {
                     <div className="flex-shrink-0">
                       <Link href={`/product/${item.product.slug}`}>
                         <Image
-                          src={item.product.mainImage || '/placeholder-product.png'}
+                          src={item.product.mainImage || '/placeholder-product.svg'}
                           alt={item.product.title}
                           width={180}
                           height={180}

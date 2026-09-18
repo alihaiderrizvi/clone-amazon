@@ -247,21 +247,34 @@ export function SearchContent() {
       <div className="border-b border-gray-200 pb-4">
         <h3 className="font-bold text-sm mb-3">Department</h3>
         <ul className="space-y-2 text-sm">
-          {(facets.categories.length > 0 ? facets.categories : mockCategories).map((cat) => (
-            <li key={cat.id || cat.slug}>
-              <button
-                onClick={() => handleCategoryClick(cat.slug || cat.id)}
-                className={`text-left hover:text-[#C7511F] ${
-                  category === (cat.slug || cat.id) ? 'font-bold text-[#C7511F]' : ''
-                }`}
-              >
-                {cat.name}
-                {'count' in cat && (
+          {facets.categories.length > 0 ? (
+            facets.categories.map((cat) => (
+              <li key={cat.id}>
+                <button
+                  onClick={() => handleCategoryClick(cat.id)}
+                  className={`text-left hover:text-[#C7511F] ${
+                    category === cat.id ? 'font-bold text-[#C7511F]' : ''
+                  }`}
+                >
+                  {cat.name}
                   <span className="text-gray-500 ml-1">({cat.count})</span>
-                )}
-              </button>
-            </li>
-          ))}
+                </button>
+              </li>
+            ))
+          ) : (
+            mockCategories.map((cat) => (
+              <li key={cat.id}>
+                <button
+                  onClick={() => handleCategoryClick(cat.slug)}
+                  className={`text-left hover:text-[#C7511F] ${
+                    category === cat.slug ? 'font-bold text-[#C7511F]' : ''
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              </li>
+            ))
+          )}
         </ul>
       </div>
 

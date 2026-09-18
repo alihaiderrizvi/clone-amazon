@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext, createContext } from 'react';
 import { Cart, CartItem, ProductListItem } from '@/types';
 
 const CART_STORAGE_KEY = 'amazon-clone-cart';
@@ -37,23 +37,50 @@ function calculateSubtotal(items: CartItem[]): number {
   return items.reduce((sum, item) => sum + item.product.priceCents * item.quantity, 0);
 }
 
+// Cart context type for shared state
+interface CartContextType {
+  cart: Cart;
+  items: CartItem[];
+  itemCount: number;
+  subtotalCents: number;
+  isLoading: boolean;
+  addItem: (product: ProductListItem, quantity?: number) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
+  removeItem: (productId: string) => void;
+  clearCart: () => void;
+}
+
+// Create context (can be used by CartProvider in context/cart-context.tsx)
+export const CartContext = createContext<CartContextType | null>(null);
+
+/**
+ * Hook to manage cart state
+ * Uses localStorage for persistence across page refreshes
+ * Can be used standalone or with CartProvider for shared state
+ */
 export function useCart() {
+  // Try to use context first (if wrapped in CartProvider)
+  const context = useContext(CartContext);
+  
+  // Local state (used if no context is available)
   const [cart, setCart] = useState<Cart>(createEmptyCart);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load cart from storage on mount
+  // Load cart from storage on mount (only if not using context)
   useEffect(() => {
-    const storedCart = getStoredCart();
-    setCart(storedCart);
-    setIsLoading(false);
-  }, []);
+    if (!context) {
+      const storedCart = getStoredCart();
+      setCart(storedCart);
+      setIsLoading(false);
+    }
+  }, [context]);
 
-  // Persist cart to storage whenever it changes
+  // Persist cart to storage whenever it changes (only if not using context)
   useEffect(() => {
-    if (!isLoading && typeof window !== 'undefined') {
+    if (!context && !isLoading && typeof window !== 'undefined') {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
     }
-  }, [cart, isLoading]);
+  }, [cart, isLoading, context]);
 
   const addItem = useCallback((product: ProductListItem, quantity: number = 1) => {
     setCart((prevCart) => {
@@ -136,6 +163,11 @@ export function useCart() {
   const clearCart = useCallback(() => {
     setCart(createEmptyCart());
   }, []);
+
+  // If context is available, use it; otherwise use local state
+  if (context) {
+    return context;
+  }
 
   const itemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 

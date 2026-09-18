@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { useState, useEffect, useCallback, ReactNode } from 'react';
 import { Cart, CartItem, ProductListItem } from '@/types';
+import { CartContext } from '@/hooks/use-cart';
 
 const CART_STORAGE_KEY = 'amazon-clone-cart';
 
@@ -36,19 +37,6 @@ function calculateSubtotal(items: CartItem[]): number {
   return items.reduce((sum, item) => sum + item.product.priceCents * item.quantity, 0);
 }
 
-interface CartContextType {
-  cart: Cart;
-  items: CartItem[];
-  itemCount: number;
-  subtotalCents: number;
-  isLoading: boolean;
-  addItem: (product: ProductListItem, quantity?: number) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  removeItem: (productId: string) => void;
-  clearCart: () => void;
-}
-
-const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Cart>(createEmptyCart);
@@ -171,10 +159,5 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useCartContext() {
-  const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error('useCartContext must be used within a CartProvider');
-  }
-  return context;
-}
+// Export useCart from hooks for convenience
+export { useCart } from '@/hooks/use-cart';
