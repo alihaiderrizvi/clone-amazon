@@ -101,6 +101,56 @@ class OrderCreate(BaseModel):
     """Order creation request (checkout)."""
 
     address: Address = Field(..., description="Shipping address")
+    payment_method: str = Field("card", alias="paymentMethod", description="Payment method identifier")
 
-    # Payment details would be handled separately via a payment provider
+    model_config = {"populate_by_name": True}
+
+    # Note: Payment processing would be handled separately via a payment provider
     # This just captures the intent to checkout with the current cart
+
+
+# Response models
+
+
+class OrderResponse(BaseModel):
+    """Single order response."""
+
+    id: str = Field(..., description="Order ID")
+    user_id: str = Field(..., alias="userId")
+    items: list[OrderItem] = Field(...)
+    subtotal_cents: int = Field(..., alias="subtotalCents")
+    shipping_cents: int = Field(..., alias="shippingCents")
+    tax_cents: int = Field(..., alias="taxCents")
+    total_cents: int = Field(..., alias="totalCents")
+    address: Address = Field(...)
+    payment_method: str = Field(..., alias="paymentMethod")
+    status: OrderStatus = Field(...)
+    placed_at: datetime = Field(..., alias="placedAt")
+    updated_at: datetime | None = Field(None, alias="updatedAt")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrderSummary(BaseModel):
+    """Summarized order for list view."""
+
+    id: str = Field(..., description="Order ID")
+    item_count: int = Field(..., alias="itemCount", description="Total number of items")
+    total_cents: int = Field(..., alias="totalCents")
+    status: OrderStatus = Field(...)
+    placed_at: datetime = Field(..., alias="placedAt")
+    first_item_image: str | None = Field(None, alias="firstItemImage", description="Image of first item")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrderListResponse(BaseModel):
+    """Paginated list of orders."""
+
+    orders: list[OrderSummary] = Field(default_factory=list)
+    page: int = Field(...)
+    limit: int = Field(...)
+    total: int = Field(..., description="Total number of orders")
+    total_pages: int = Field(..., alias="totalPages")
+
+    model_config = {"populate_by_name": True}
