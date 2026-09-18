@@ -120,10 +120,11 @@ async def verify_jwt(
 
     try:
         # Verify and decode the token
+        # Supabase uses ES256 (ECDSA with P-256 curve)
         payload = jwt.decode(
             token,
             signing_key.key,
-            algorithms=["RS256"],
+            algorithms=["ES256"],
             options={
                 "verify_exp": True,
                 "verify_iat": True,
