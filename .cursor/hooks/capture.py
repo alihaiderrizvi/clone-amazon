@@ -193,9 +193,32 @@ def note_model(state, model):
         state["models"].append(model)
 
 
+def trace(event, session_id, detail=""):
+    """Record every event the hook sees, so gaps in .agent-logs/ are diagnosable.
+
+    Scratch data, not log data - lives in the gitignored state dir.
+    """
+    try:
+        os.makedirs(STATE_DIR, exist_ok=True)
+        with open(os.path.join(STATE_DIR, "events.log"), "a") as fh:
+            fh.write("%s %-20s %s %s\n" % (now_iso(), event, session_id[:8], detail))
+    except Exception:
+        pass
+
+
 def handle(payload):
     event = payload.get("hook_event_name") or ""
     session_id = payload.get("conversation_id") or payload.get("session_id") or "unknown"
+    trace(
+        event,
+        session_id,
+        "subagent=%s textlen=%s status=%s"
+        % (
+            bool(is_subagent(payload)),
+            len(payload.get("text") or ""),
+            payload.get("status") or "-",
+        ),
+    )
     if is_subagent(payload):
         return
     if event not in ("beforeSubmitPrompt", "afterAgentResponse", "stop"):
