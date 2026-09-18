@@ -50,3 +50,27 @@ class SellerCreate(BaseModel):
     contact_email: EmailStr = Field(..., alias="contactEmail")
 
     model_config = {"populate_by_name": True}
+
+
+class SellerUpdate(BaseModel):
+    """Seller profile update request (all fields optional)."""
+
+    store_name: str | None = Field(None, alias="storeName", min_length=1, max_length=100)
+    display_name: str | None = Field(None, alias="displayName", min_length=1, max_length=100)
+    contact_email: EmailStr | None = Field(None, alias="contactEmail")
+
+    model_config = {"populate_by_name": True}
+
+
+class SellerResponse(BaseModel):
+    """Seller profile response with computed fields."""
+
+    id: str = Field(..., description="Unique seller ID")
+    user_id: str = Field(..., alias="userId", description="Associated user ID")
+    store_name: str = Field(..., alias="storeName", description="Store name")
+    display_name: str = Field(..., alias="displayName", description="Seller display name")
+    contact_email: str = Field(..., alias="contactEmail", description="Contact email")
+    created_at: datetime = Field(..., alias="createdAt", description="Seller account creation timestamp")
+    is_advertiser: bool = Field(False, alias="isAdvertiser", description="Whether seller has ads enabled")
+
+    model_config = {"populate_by_name": True}

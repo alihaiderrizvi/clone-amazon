@@ -10,7 +10,15 @@ import {
   Wishlist,
   Order,
   OrderList,
-  CreateOrderData
+  CreateOrderData,
+  Seller,
+  SellerCreateData,
+  SellerUpdateData,
+  SellerListing,
+  SellerListingCreate,
+  SellerListingUpdate,
+  SellerListingsResponse,
+  SellerStats,
 } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -485,4 +493,306 @@ export async function getOrders(page: number = 1): Promise<OrderList> {
  */
 export async function getOrder(orderId: string): Promise<Order> {
   return api.get<Order>(`/orders/${orderId}`);
+}
+
+// ============================================================================
+// Advertising API Functions
+// ============================================================================
+
+export interface AdvertiserStatus {
+  enabled: boolean;
+  hasSeller?: boolean;
+  advertiserId?: string;
+  sellerId?: string;
+}
+
+export interface CampaignWithStats {
+  id: string;
+  advertiserId: string;
+  productId: string;
+  keywords: string[];
+  bidCents: number;
+  dailyBudgetCents: number;
+  status: 'active' | 'paused';
+  createdAt: string;
+  updatedAt: string;
+  spentTodayCents: number;
+  impressionsToday: number;
+  clicksToday: number;
+}
+
+export interface CampaignListResponse {
+  campaigns: CampaignWithStats[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface CampaignCreateData {
+  productId: string;
+  keywords: string[];
+  bidCents: number;
+  dailyBudgetCents: number;
+}
+
+export interface CampaignUpdateData {
+  keywords?: string[];
+  bidCents?: number;
+  dailyBudgetCents?: number;
+  status?: 'active' | 'paused';
+}
+
+export interface CampaignStats {
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  spendCents: number;
+  orders: number;
+  revenueCents: number;
+  acos: number | null;
+}
+
+export interface CampaignStatsResponse {
+  campaignId: string;
+  startDate: string;
+  endDate: string;
+  stats: CampaignStats;
+  daily: Array<{
+    date: string;
+    impressions: number;
+    clicks: number;
+    spentCents: number;
+  }>;
+}
+
+export interface AdsOverview {
+  totalSpendCents: number;
+  totalImpressions: number;
+  totalClicks: number;
+  avgCtr: number;
+  activeCampaigns: number;
+  pausedCampaigns: number;
+}
+
+export interface SellerProduct {
+  id: string;
+  title: string;
+  slug: string;
+  mainImage: string;
+  priceCents: number;
+}
+
+export interface SponsoredProduct {
+  campaignId: string;
+  productId: string;
+  bidCents: number;
+  secondPriceCents: number;
+}
+
+export interface SponsoredProductsResponse {
+  sponsoredProducts: SponsoredProduct[];
+  query: string;
+}
+
+/**
+ * Enable advertising for the current seller
+ */
+export async function enableAdvertising(): Promise<{ advertiserId: string; enabled: boolean }> {
+  return api.post('/seller/ads/enable');
+}
+
+/**
+ * Get advertising status for the current seller
+ */
+export async function getAdvertisingStatus(): Promise<AdvertiserStatus> {
+  return api.get('/seller/ads/status');
+}
+
+/**
+ * Get campaigns for the current advertiser
+ */
+export async function getCampaigns(params?: {
+  page?: number;
+  limit?: number;
+  status?: 'active' | 'paused';
+}): Promise<CampaignListResponse> {
+  const searchParams = new URLSearchParams();
+  if (params?.page) searchParams.set('page', params.page.toString());
+  if (params?.limit) searchParams.set('limit', params.limit.toString());
+  if (params?.status) searchParams.set('status', params.status);
+  
+  const query = searchParams.toString();
+  return api.get(`/seller/ads/campaigns${query ? `?${query}` : ''}`);
+}
+
+/**
+ * Create a new campaign
+ */
+export async function createCampaign(data: CampaignCreateData): Promise<{ campaign: CampaignWithStats }> {
+  return api.post('/seller/ads/campaigns', data);
+}
+
+/**
+ * Get a campaign by ID
+ */
+export async function getCampaign(campaignId: string): Promise<{ campaign: CampaignWithStats; product: ProductListItem | null }> {
+  return api.get(`/seller/ads/campaigns/${campaignId}`);
+}
+
+/**
+ * Update a campaign
+ */
+export async function updateCampaign(campaignId: string, data: CampaignUpdateData): Promise<{ campaign: CampaignWithStats }> {
+  return api.patch(`/seller/ads/campaigns/${campaignId}`, data);
+}
+
+/**
+ * Delete a campaign
+ */
+export async function deleteCampaign(campaignId: string): Promise<void> {
+  return api.delete(`/seller/ads/campaigns/${campaignId}`);
+}
+
+/**
+ * Get campaign stats
+ */
+export async function getCampaignStats(
+  campaignId: string,
+  params?: { startDate?: string; endDate?: string }
+): Promise<CampaignStatsResponse> {
+  const searchParams = new URLSearchParams();
+  if (params?.startDate) searchParams.set('startDate', params.startDate);
+  if (params?.endDate) searchParams.set('endDate', params.endDate);
+  
+  const query = searchParams.toString();
+  return api.get(`/seller/ads/campaigns/${campaignId}/stats${query ? `?${query}` : ''}`);
+}
+
+/**
+ * Get overview stats for ads dashboard
+ */
+export async function getAdsOverview(): Promise<AdsOverview> {
+  return api.get('/seller/ads/overview');
+}
+
+/**
+ * Get seller's products for campaign creation
+ */
+export async function getSellerProductsForAds(): Promise<{ products: SellerProduct[] }> {
+  return api.get('/seller/ads/products');
+}
+
+/**
+ * Serve sponsored products for a search query
+ */
+export async function serveAds(query: string, limit?: number): Promise<SponsoredProductsResponse> {
+  const params = new URLSearchParams();
+  params.set('q', query);
+  if (limit) params.set('limit', limit.toString());
+  return api.get(`/ads/serve?${params.toString()}`);
+}
+
+/**
+ * Record an ad click
+ */
+export async function recordAdClick(data: {
+  campaignId: string;
+  productId: string;
+  query: string;
+}): Promise<{ charged: boolean; costCents?: number }> {
+  return api.post('/ads/click', data);
+}
+
+// ============================================================================
+// Seller API Functions
+// ============================================================================
+
+/**
+ * Create a new seller account for the current user
+ */
+export async function createSellerAccount(data: SellerCreateData): Promise<Seller> {
+  return api.post<Seller>('/sellers', data);
+}
+
+/**
+ * Get the current user's seller profile
+ */
+export async function getMySellerProfile(): Promise<Seller> {
+  return api.get<Seller>('/sellers/me');
+}
+
+/**
+ * Update the current user's seller profile
+ */
+export async function updateMySellerProfile(data: SellerUpdateData): Promise<Seller> {
+  return api.patch<Seller>('/sellers/me', data);
+}
+
+/**
+ * Check if current user is a seller
+ */
+export async function checkSellerStatus(): Promise<{ isSeller: boolean; seller?: Seller }> {
+  try {
+    const seller = await getMySellerProfile();
+    return { isSeller: true, seller };
+  } catch {
+    return { isSeller: false };
+  }
+}
+
+/**
+ * Get seller dashboard statistics
+ */
+export async function getSellerStats(): Promise<SellerStats> {
+  return api.get<SellerStats>('/seller/stats');
+}
+
+/**
+ * Get seller's product listings
+ */
+export async function getSellerListings(
+  params: { page?: number; limit?: number; status?: 'draft' | 'published' } = {}
+): Promise<SellerListingsResponse> {
+  const searchParams = new URLSearchParams();
+  
+  if (params.page) searchParams.set('page', params.page.toString());
+  if (params.limit) searchParams.set('limit', params.limit.toString());
+  if (params.status) searchParams.set('status', params.status);
+  
+  const queryString = searchParams.toString();
+  const path = `/seller/listings${queryString ? `?${queryString}` : ''}`;
+  
+  return api.get<SellerListingsResponse>(path);
+}
+
+/**
+ * Create a new product listing
+ */
+export async function createListing(data: SellerListingCreate): Promise<SellerListing> {
+  return api.post<SellerListing>('/seller/listings', data);
+}
+
+/**
+ * Get a single listing by ID
+ */
+export async function getListing(listingId: string): Promise<SellerListing> {
+  return api.get<SellerListing>(`/seller/listings/${listingId}`);
+}
+
+/**
+ * Update a listing
+ */
+export async function updateListing(
+  listingId: string,
+  data: SellerListingUpdate
+): Promise<SellerListing> {
+  return api.patch<SellerListing>(`/seller/listings/${listingId}`, data);
+}
+
+/**
+ * Delete a listing
+ */
+export async function deleteListing(listingId: string): Promise<void> {
+  return api.delete<void>(`/seller/listings/${listingId}`);
 }

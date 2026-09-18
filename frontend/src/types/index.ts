@@ -120,27 +120,123 @@ export interface Address {
 export interface Seller {
   id: string;
   userId: string;
-  businessName: string;
-  businessType: 'individual' | 'business';
-  status: 'pending' | 'approved' | 'suspended';
-  rating: number;
-  totalSales: number;
+  storeName: string;
+  displayName: string;
+  contactEmail: string;
   createdAt: string;
+  isAdvertiser: boolean;
+}
+
+export interface SellerCreateData {
+  storeName: string;
+  displayName: string;
+  contactEmail: string;
+}
+
+export interface SellerUpdateData {
+  storeName?: string;
+  displayName?: string;
+  contactEmail?: string;
 }
 
 export interface SellerListing {
   id: string;
-  productId: string;
-  product: Product;
+  slug: string;
+  title: string;
+  brand?: string;
+  categoryId: string;
+  priceCents: number;
+  listPriceCents?: number;
+  images: string[];
+  mainImage?: string;
+  bullets: string[];
+  description?: string;
+  attributes: Record<string, string>;
+  stock: number;
   sellerId: string;
-  status: 'draft' | 'published' | 'paused';
-  inventoryCount: number;
+  status: 'draft' | 'published';
+  ratingAvg?: number;
+  ratingCount: number;
   createdAt: string;
   updatedAt: string;
 }
 
+export interface SellerListingCreate {
+  title: string;
+  slug?: string;
+  brand?: string;
+  categoryId: string;
+  priceCents: number;
+  listPriceCents?: number;
+  images: string[];
+  bullets: string[];
+  description?: string;
+  attributes?: Record<string, string>;
+  stock: number;
+  status?: 'draft' | 'published';
+}
+
+export interface SellerListingUpdate {
+  title?: string;
+  brand?: string;
+  categoryId?: string;
+  priceCents?: number;
+  listPriceCents?: number;
+  images?: string[];
+  bullets?: string[];
+  description?: string;
+  attributes?: Record<string, string>;
+  stock?: number;
+  status?: 'draft' | 'published';
+}
+
+export interface SellerListingsResponse {
+  products: SellerListing[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface SellerStats {
+  totalListings: number;
+  publishedCount: number;
+  draftCount: number;
+  totalOrders: number;
+  totalRevenueCents: number;
+  lowStockCount: number;
+  outOfStockCount: number;
+}
+
 // Ads types
-export type CampaignStatus = 'draft' | 'active' | 'paused' | 'ended';
+export type CampaignStatus = 'active' | 'paused';
+
+export interface AdCampaign {
+  id: string;
+  advertiserId: string;
+  productId: string;
+  keywords: string[];
+  bidCents: number;
+  dailyBudgetCents: number;
+  status: CampaignStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdCampaignWithStats extends AdCampaign {
+  spentTodayCents: number;
+  impressionsToday: number;
+  clicksToday: number;
+}
+
+export interface SponsoredProductResult {
+  campaignId: string;
+  productId: string;
+  bidCents: number;
+  secondPriceCents: number;
+}
+
+// Legacy Campaign type for backward compatibility
 export type CampaignType = 'sponsored_product' | 'sponsored_brand' | 'display';
 
 export interface Campaign {
@@ -148,7 +244,7 @@ export interface Campaign {
   sellerId: string;
   name: string;
   type: CampaignType;
-  status: CampaignStatus;
+  status: 'draft' | 'active' | 'paused' | 'ended';
   budgetCents: number;
   spentCents: number;
   startDate: string;

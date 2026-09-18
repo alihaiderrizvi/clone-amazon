@@ -53,6 +53,7 @@ class AdCampaign(BaseModel):
     daily_budget_cents: int = Field(..., alias="dailyBudgetCents", ge=100, description="Daily budget in cents")
     status: CampaignStatus = Field(..., description="Campaign status")
     created_at: dt.datetime = Field(..., alias="createdAt", description="Creation timestamp")
+    updated_at: dt.datetime = Field(..., alias="updatedAt", description="Last update timestamp")
 
     model_config = {
         "populate_by_name": True,
@@ -66,6 +67,7 @@ class AdCampaign(BaseModel):
                 "dailyBudgetCents": 5000,
                 "status": "active",
                 "createdAt": "2024-01-15T00:00:00Z",
+                "updatedAt": "2024-01-15T00:00:00Z",
             }
         },
     }
@@ -98,7 +100,9 @@ class AdEvent(BaseModel):
 
     id: str = Field(..., description="Unique event ID")
     campaign_id: str = Field(..., alias="campaignId", description="Campaign ID")
+    product_id: str = Field(..., alias="productId", description="Product ID")
     event_type: AdEventType = Field(..., alias="eventType", description="Event type")
+    query: str = Field(..., description="Search query that triggered this event")
     ts: dt.datetime = Field(..., description="Event timestamp")
     user_id: str | None = Field(None, alias="userId", description="User ID if known")
     cost_cents: int = Field(0, alias="costCents", ge=0, description="Cost of this event in cents")
@@ -126,5 +130,39 @@ class SponsoredProduct(BaseModel):
     campaign_id: str = Field(..., alias="campaignId", description="Campaign ID")
     product_id: str = Field(..., alias="productId", description="Product ID")
     bid_cents: int = Field(..., alias="bidCents", description="Winning bid in cents")
+
+    model_config = {"populate_by_name": True}
+
+
+class AdClickRequest(BaseModel):
+    """Request body for recording an ad click."""
+
+    campaign_id: str = Field(..., alias="campaignId", description="Campaign ID")
+    product_id: str = Field(..., alias="productId", description="Product ID")
+    query: str = Field(..., description="Search query that triggered the ad")
+
+    model_config = {"populate_by_name": True}
+
+
+class CampaignStats(BaseModel):
+    """Campaign performance statistics."""
+
+    impressions: int = Field(0, description="Total impressions")
+    clicks: int = Field(0, description="Total clicks")
+    ctr: float = Field(0.0, description="Click-through rate")
+    spend_cents: int = Field(0, alias="spendCents", description="Total spend in cents")
+    orders: int = Field(0, description="Orders attributed to this campaign")
+    revenue_cents: int = Field(0, alias="revenueCents", description="Revenue from attributed orders")
+    acos: float | None = Field(None, description="Advertising Cost of Sales (spend/revenue)")
+
+    model_config = {"populate_by_name": True}
+
+
+class CampaignWithStats(AdCampaign):
+    """Campaign with today's spend and stats."""
+
+    spent_today_cents: int = Field(0, alias="spentTodayCents", description="Spend today in cents")
+    impressions_today: int = Field(0, alias="impressionsToday", description="Impressions today")
+    clicks_today: int = Field(0, alias="clicksToday", description="Clicks today")
 
     model_config = {"populate_by_name": True}

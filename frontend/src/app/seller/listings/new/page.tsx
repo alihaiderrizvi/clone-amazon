@@ -5,20 +5,29 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { ListingForm } from '@/components/seller/listing-form';
+import { createListing } from '@/lib/api';
+import { SellerListingCreate, SellerListingUpdate } from '@/types';
 
 export default function NewListingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (data: unknown) => {
+  const handleSubmit = async (data: SellerListingCreate | SellerListingUpdate, publish: boolean) => {
     setIsLoading(true);
+    setError(null);
+    
     try {
-      // TODO: Submit to API
-      console.log('Creating listing:', data);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      const listingData = {
+        ...data,
+        status: publish ? 'published' : 'draft',
+      } as SellerListingCreate;
+      
+      await createListing(listingData);
       router.push('/seller/listings');
-    } catch (error) {
-      console.error('Failed to create listing:', error);
+    } catch (err) {
+      console.error('Failed to create listing:', err);
+      setError(err instanceof Error ? err.message : 'Failed to create listing');
     } finally {
       setIsLoading(false);
     }
@@ -37,6 +46,12 @@ export default function NewListingPage() {
         <h1 className="text-2xl font-bold text-gray-900">Add New Listing</h1>
         <p className="text-gray-600 mt-1">Create a new product listing to sell on Amazon Clone</p>
       </div>
+
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          {error}
+        </div>
+      )}
 
       <ListingForm onSubmit={handleSubmit} isLoading={isLoading} />
     </div>

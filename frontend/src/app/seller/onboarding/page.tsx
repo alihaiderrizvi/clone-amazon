@@ -1,230 +1,226 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, Building2, User, FileText, CreditCard } from 'lucide-react';
-
-const steps = [
-  { id: 1, title: 'Account Type', icon: Building2 },
-  { id: 2, title: 'Business Info', icon: FileText },
-  { id: 3, title: 'Verification', icon: User },
-  { id: 4, title: 'Payment', icon: CreditCard },
-];
+import { Store, User, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { createSellerAccount } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function SellerOnboardingPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [accountType, setAccountType] = useState<'individual' | 'business' | null>(null);
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  
+  const [storeName, setStoreName] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Pre-fill email from user profile
+  useState(() => {
+    if (user?.email) {
+      setContactEmail(user.email);
+    }
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!termsAccepted) {
+      setError('Please accept the terms and conditions');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await createSellerAccount({
+        storeName,
+        displayName,
+        contactEmail,
+      });
+      
+      // Redirect to seller dashboard on success
+      router.push('/seller');
+    } catch (err) {
+      console.error('Failed to create seller account:', err);
+      setError(err instanceof Error ? err.message : 'Failed to create seller account');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF9900]" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="max-w-md mx-auto text-center py-12">
+        <AlertCircle className="h-12 w-12 mx-auto text-yellow-500 mb-4" />
+        <h2 className="text-xl font-bold mb-2">Sign In Required</h2>
+        <p className="text-gray-600 mb-6">
+          You need to be signed in to become a seller.
+        </p>
+        <Link href="/login">
+          <Button>Sign In</Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-xl mx-auto py-8">
       <div className="text-center mb-8">
+        <div className="h-16 w-16 bg-[#FFEFD6] rounded-full flex items-center justify-center mx-auto mb-4">
+          <Store className="h-8 w-8 text-[#C7511F]" />
+        </div>
         <h1 className="text-3xl font-bold text-gray-900">Become a Seller</h1>
         <p className="text-gray-600 mt-2">
           Start selling to millions of customers on Amazon Clone
         </p>
       </div>
 
-      {/* Progress Steps */}
-      <div className="flex items-center justify-center mb-8">
-        {steps.map((step, index) => {
-          const Icon = step.icon;
-          const isActive = step.id === currentStep;
-          const isCompleted = step.id < currentStep;
-
-          return (
-            <div key={step.id} className="flex items-center">
-              <div
-                className={`flex flex-col items-center ${
-                  isActive ? 'text-[#FF9900]' : isCompleted ? 'text-green-600' : 'text-gray-400'
-                }`}
-              >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
-                    isActive
-                      ? 'border-[#FF9900] bg-[#FFEFD6]'
-                      : isCompleted
-                      ? 'border-green-600 bg-green-50'
-                      : 'border-gray-300 bg-white'
-                  }`}
-                >
-                  {isCompleted ? (
-                    <CheckCircle className="h-5 w-5" />
-                  ) : (
-                    <Icon className="h-5 w-5" />
-                  )}
-                </div>
-                <span className="text-xs mt-1 font-medium">{step.title}</span>
-              </div>
-              {index < steps.length - 1 && (
-                <div
-                  className={`w-16 h-0.5 mx-2 ${
-                    isCompleted ? 'bg-green-600' : 'bg-gray-200'
-                  }`}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Step Content */}
       <Card>
-        {currentStep === 1 && (
-          <>
-            <CardHeader>
-              <CardTitle>Choose your account type</CardTitle>
-              <CardDescription>
-                Select the type of account that best fits your selling needs
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <button
-                onClick={() => setAccountType('individual')}
-                className={`w-full p-4 border-2 rounded-lg text-left transition-colors ${
-                  accountType === 'individual'
-                    ? 'border-[#FF9900] bg-[#FFEFD6]'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <User className="h-6 w-6 text-[#C7511F]" />
-                  <div>
-                    <p className="font-medium">Individual</p>
-                    <p className="text-sm text-gray-600">
-                      Best for casual sellers. $0.99 per item sold.
-                    </p>
-                  </div>
-                </div>
-              </button>
-
-              <button
-                onClick={() => setAccountType('business')}
-                className={`w-full p-4 border-2 rounded-lg text-left transition-colors ${
-                  accountType === 'business'
-                    ? 'border-[#FF9900] bg-[#FFEFD6]'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Building2 className="h-6 w-6 text-[#C7511F]" />
-                  <div>
-                    <p className="font-medium">Professional</p>
-                    <p className="text-sm text-gray-600">
-                      Best for established businesses. $39.99/month, unlimited listings.
-                    </p>
-                  </div>
-                </div>
-              </button>
-
-              <Button
-                onClick={() => setCurrentStep(2)}
-                className="w-full mt-4"
-                disabled={!accountType}
-              >
-                Continue
-              </Button>
-            </CardContent>
-          </>
-        )}
-
-        {currentStep === 2 && (
-          <>
-            <CardHeader>
-              <CardTitle>Business Information</CardTitle>
-              <CardDescription>
-                Tell us about your business
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input label="Business Name" placeholder="Your business name" />
-              <Input label="Business Address" placeholder="123 Main Street" />
-              <div className="grid grid-cols-2 gap-4">
-                <Input label="City" placeholder="New York" />
-                <Input label="State" placeholder="NY" />
+        <CardHeader>
+          <CardTitle>Set Up Your Store</CardTitle>
+          <CardDescription>
+            Tell us about your store to get started
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                {error}
               </div>
-              <Input label="Phone Number" type="tel" placeholder="(555) 123-4567" />
-              <div className="flex gap-4 mt-4">
-                <Button variant="secondary" onClick={() => setCurrentStep(1)}>
-                  Back
-                </Button>
-                <Button onClick={() => setCurrentStep(3)} className="flex-1">
-                  Continue
-                </Button>
-              </div>
-            </CardContent>
-          </>
-        )}
+            )}
 
-        {currentStep === 3 && (
-          <>
-            <CardHeader>
-              <CardTitle>Identity Verification</CardTitle>
-              <CardDescription>
-                We need to verify your identity to protect buyers and sellers
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input label="Full Legal Name" placeholder="As it appears on your ID" />
-              <Input label="Date of Birth" type="date" />
-              <Input label="SSN / Tax ID (last 4 digits)" placeholder="XXXX" maxLength={4} />
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">
-                  <strong>Note:</strong> This information is securely stored and used only for 
-                  verification purposes. We comply with all privacy regulations.
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <Store className="h-4 w-4 inline mr-1" />
+                  Store Name
+                </label>
+                <Input
+                  value={storeName}
+                  onChange={(e) => setStoreName(e.target.value)}
+                  placeholder="e.g., TechGadgets Store"
+                  required
+                  maxLength={100}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This will be visible to customers
                 </p>
               </div>
-              <div className="flex gap-4 mt-4">
-                <Button variant="secondary" onClick={() => setCurrentStep(2)}>
-                  Back
-                </Button>
-                <Button onClick={() => setCurrentStep(4)} className="flex-1">
-                  Continue
-                </Button>
-              </div>
-            </CardContent>
-          </>
-        )}
 
-        {currentStep === 4 && (
-          <>
-            <CardHeader>
-              <CardTitle>Payment Information</CardTitle>
-              <CardDescription>
-                Add a bank account to receive your earnings
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input label="Bank Name" placeholder="Your bank name" />
-              <Input label="Account Holder Name" placeholder="Name on the account" />
-              <Input label="Routing Number" placeholder="9 digit routing number" maxLength={9} />
-              <Input label="Account Number" placeholder="Your account number" />
-              <div className="flex gap-4 mt-4">
-                <Button variant="secondary" onClick={() => setCurrentStep(3)}>
-                  Back
-                </Button>
-                <Link href="/seller" className="flex-1">
-                  <Button className="w-full">Complete Registration</Button>
-                </Link>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <User className="h-4 w-4 inline mr-1" />
+                  Display Name
+                </label>
+                <Input
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="e.g., TechGadgets"
+                  required
+                  maxLength={100}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  A short name for your seller profile
+                </p>
               </div>
-            </CardContent>
-          </>
-        )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <Mail className="h-4 w-4 inline mr-1" />
+                  Contact Email
+                </label>
+                <Input
+                  type="email"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  placeholder="contact@yourstore.com"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  For customer inquiries and important updates
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-6">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-[#FF9900] focus:ring-[#FF9900]"
+                />
+                <span className="text-sm text-gray-600">
+                  I agree to the{' '}
+                  <Link href="#" className="text-[#007185] hover:underline">
+                    Seller Agreement
+                  </Link>
+                  {' '}and{' '}
+                  <Link href="#" className="text-[#007185] hover:underline">
+                    Privacy Policy
+                  </Link>
+                  . I understand that I am responsible for complying with all applicable laws and regulations.
+                </span>
+              </label>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading || !termsAccepted}
+              isLoading={isLoading}
+            >
+              Create Seller Account
+            </Button>
+          </form>
+        </CardContent>
       </Card>
 
-      <p className="text-center text-sm text-gray-500 mt-6">
-        By registering, you agree to the{' '}
-        <Link href="#" className="text-[#007185] hover:underline">
-          Seller Agreement
-        </Link>{' '}
-        and{' '}
-        <Link href="#" className="text-[#007185] hover:underline">
-          Privacy Policy
-        </Link>
-        .
-      </p>
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+          Why Sell on Amazon Clone?
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="text-center p-4">
+            <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <CheckCircle className="h-5 w-5 text-green-600" />
+            </div>
+            <p className="text-sm font-medium">Reach Millions</p>
+            <p className="text-xs text-gray-500">Access our large customer base</p>
+          </div>
+          <div className="text-center p-4">
+            <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <CheckCircle className="h-5 w-5 text-green-600" />
+            </div>
+            <p className="text-sm font-medium">Easy Management</p>
+            <p className="text-xs text-gray-500">Powerful seller tools</p>
+          </div>
+          <div className="text-center p-4">
+            <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <CheckCircle className="h-5 w-5 text-green-600" />
+            </div>
+            <p className="text-sm font-medium">Grow Your Business</p>
+            <p className="text-xs text-gray-500">Advertising & analytics</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

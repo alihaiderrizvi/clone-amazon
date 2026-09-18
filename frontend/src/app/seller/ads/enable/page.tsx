@@ -1,15 +1,18 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, Target, BarChart3, DollarSign, Zap } from 'lucide-react';
+import { CheckCircle, Target, BarChart3, DollarSign, Zap, Loader2, AlertCircle } from 'lucide-react';
+import { getAdvertisingStatus, enableAdvertising } from '@/lib/api';
 
 const benefits = [
   {
     icon: Target,
     title: 'Reach More Customers',
-    description: 'Put your products in front of millions of shoppers actively searching for what you sell.',
+    description: 'Put your products in front of shoppers actively searching for what you sell.',
   },
   {
     icon: BarChart3,
@@ -28,25 +31,73 @@ const benefits = [
   },
 ];
 
-const adTypes = [
-  {
-    name: 'Sponsored Products',
-    description: 'Promote individual product listings to shoppers actively searching.',
-    price: 'Pay-per-click',
-  },
-  {
-    name: 'Sponsored Brands',
-    description: 'Showcase your brand with a custom headline and logo.',
-    price: 'Pay-per-click',
-  },
-  {
-    name: 'Display Ads',
-    description: 'Reach shoppers on and off Amazon Clone with display ads.',
-    price: 'Pay-per-impression',
-  },
-];
-
 export default function EnableAdsPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEnabling, setIsEnabling] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ enabled: boolean; hasSeller?: boolean } | null>(null);
+
+  useEffect(() => {
+    async function checkStatus() {
+      try {
+        const result = await getAdvertisingStatus();
+        setStatus(result);
+        
+        // If already enabled, redirect to dashboard
+        if (result.enabled) {
+          router.push('/seller/ads');
+        }
+      } catch (err) {
+        console.error('Failed to check advertising status:', err);
+        setError('Failed to check advertising status');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    checkStatus();
+  }, [router]);
+
+  const handleEnable = async () => {
+    setIsEnabling(true);
+    setError(null);
+    
+    try {
+      await enableAdvertising();
+      router.push('/seller/ads');
+    } catch (err) {
+      console.error('Failed to enable advertising:', err);
+      setError(err instanceof Error ? err.message : 'Failed to enable advertising');
+    } finally {
+      setIsEnabling(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
+
+  // User doesn't have a seller account
+  if (status && !status.hasSeller) {
+    return (
+      <div className="max-w-2xl mx-auto text-center py-12">
+        <AlertCircle className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Seller Account Required</h1>
+        <p className="text-gray-600 mb-6">
+          You need a seller account to enable advertising. Complete your seller onboarding first.
+        </p>
+        <Link href="/seller/onboarding">
+          <Button>Complete Seller Onboarding</Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
@@ -55,6 +106,12 @@ export default function EnableAdsPage() {
           Reach millions of customers and boost your product visibility
         </p>
       </div>
+
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          {error}
+        </div>
+      )}
 
       {/* Benefits */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -76,28 +133,49 @@ export default function EnableAdsPage() {
         })}
       </div>
 
-      {/* Ad Types */}
+      {/* How It Works */}
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Choose Your Ad Type</CardTitle>
+          <CardTitle>How Sponsored Products Work</CardTitle>
           <CardDescription>
-            Select the advertising solution that fits your goals
+            Our second-price auction ensures you get the best value
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {adTypes.map((adType) => (
-              <div
-                key={adType.name}
-                className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-[#FF9900] transition-colors"
-              >
-                <div>
-                  <h4 className="font-medium text-gray-900">{adType.name}</h4>
-                  <p className="text-sm text-gray-600">{adType.description}</p>
-                </div>
-                <span className="text-sm text-[#007185] font-medium">{adType.price}</span>
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-[#FF9900] text-white flex items-center justify-center font-bold flex-shrink-0">
+                1
               </div>
-            ))}
+              <div>
+                <h4 className="font-medium text-gray-900">Set Your Bid</h4>
+                <p className="text-sm text-gray-600">
+                  Choose how much you're willing to pay per click. Higher bids = better placement.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-[#FF9900] text-white flex items-center justify-center font-bold flex-shrink-0">
+                2
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900">Target Keywords</h4>
+                <p className="text-sm text-gray-600">
+                  Select keywords that match your product. Your ad shows when customers search for those terms.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-4 items-start">
+              <div className="w-8 h-8 rounded-full bg-[#FF9900] text-white flex items-center justify-center font-bold flex-shrink-0">
+                3
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900">Pay Second Price</h4>
+                <p className="text-sm text-gray-600">
+                  You only pay $0.01 more than the next highest bidder, not your full bid.
+                </p>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -127,11 +205,16 @@ export default function EnableAdsPage() {
 
       {/* CTA */}
       <div className="text-center">
-        <Link href="/seller/ads/campaigns/new">
-          <Button size="lg" className="px-8">
-            Create Your First Campaign
-          </Button>
-        </Link>
+        <Button size="lg" className="px-8" onClick={handleEnable} disabled={isEnabling}>
+          {isEnabling ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Enabling...
+            </>
+          ) : (
+            'Enable Advertising'
+          )}
+        </Button>
         <p className="text-sm text-gray-500 mt-4">
           By enabling advertising, you agree to the{' '}
           <Link href="#" className="text-[#007185] hover:underline">
