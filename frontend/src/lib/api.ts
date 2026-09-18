@@ -583,11 +583,24 @@ export interface SellerProduct {
   priceCents: number;
 }
 
+export interface SponsoredProductDetails {
+  id: string;
+  slug: string;
+  title: string;
+  brand: string;
+  priceCents: number;
+  listPriceCents?: number;
+  mainImage: string;
+  ratingAvg: number;
+  ratingCount: number;
+}
+
 export interface SponsoredProduct {
   campaignId: string;
   productId: string;
   bidCents: number;
   secondPriceCents: number;
+  product: SponsoredProductDetails | null;
 }
 
 export interface SponsoredProductsResponse {

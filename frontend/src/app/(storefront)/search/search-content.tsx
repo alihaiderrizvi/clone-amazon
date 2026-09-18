@@ -107,22 +107,14 @@ export function SearchContent() {
             try {
               const adsResponse = await serveAds(query, 2);
               if (adsResponse.sponsoredProducts.length > 0) {
-                // Fetch product details for sponsored products
-                const sponsoredWithDetails = await Promise.all(
-                  adsResponse.sponsoredProducts.map(async (sp: SponsoredProduct) => {
-                    const productRes = await fetch(`${apiUrl}/products?id=${sp.productId}`);
-                    if (productRes.ok) {
-                      const productData = await productRes.json();
-                      // Find the product by ID in the response
-                      const product = productData.products?.find((p: ProductListItem) => p.id === sp.productId);
-                      if (product) {
-                        return { product, campaignId: sp.campaignId };
-                      }
-                    }
-                    return null;
-                  })
-                );
-                setSponsoredProducts(sponsoredWithDetails.filter(Boolean) as Array<{ product: ProductListItem; campaignId: string }>);
+                // Product details are included in the response from the backend
+                const sponsoredWithDetails = adsResponse.sponsoredProducts
+                  .filter(sp => sp.product !== null)
+                  .map(sp => ({
+                    product: sp.product as ProductListItem,
+                    campaignId: sp.campaignId,
+                  }));
+                setSponsoredProducts(sponsoredWithDetails);
               } else {
                 setSponsoredProducts([]);
               }
@@ -541,7 +533,43 @@ export function SearchContent() {
               ))}
             </div>
           ) : products.length > 0 ? (
-            <ProductGrid products={products} />
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {/* Insert sponsored products at positions 0 and 3 (1st and 4th slots) */}
+              {products.map((product, index) => {
+                const items = [];
+                
+                // Insert first sponsored product before index 0
+                if (index === 0 && sponsoredProducts[0]) {
+                  items.push(
+                    <SponsoredProductCard
+                      key={`sponsored-${sponsoredProducts[0].campaignId}`}
+                      product={sponsoredProducts[0].product}
+                      campaignId={sponsoredProducts[0].campaignId}
+                      query={query}
+                    />
+                  );
+                }
+                
+                // Insert second sponsored product before index 3
+                if (index === 3 && sponsoredProducts[1]) {
+                  items.push(
+                    <SponsoredProductCard
+                      key={`sponsored-${sponsoredProducts[1].campaignId}`}
+                      product={sponsoredProducts[1].product}
+                      campaignId={sponsoredProducts[1].campaignId}
+                      query={query}
+                    />
+                  );
+                }
+                
+                // Add the regular product
+                items.push(
+                  <ProductCard key={product.id} product={product} />
+                );
+                
+                return items;
+              }).flat()}
+            </div>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg mb-4">No products found</p>

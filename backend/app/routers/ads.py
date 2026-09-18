@@ -470,7 +470,7 @@ async def serve_ads(
     # Take top N
     winners = eligible[:limit]
 
-    # Calculate second prices for each winner
+    # Calculate second prices for each winner and fetch product details
     # Second price = next highest bid + 1 cent (or min bid if last)
     sponsored_products = []
     for i, winner in enumerate(winners):
@@ -480,11 +480,28 @@ async def serve_ads(
             # No next bidder, use minimum (1 cent)
             second_price = 1
 
+        # Fetch product details
+        product = await db.products.find_one({"id": winner["productId"]})
+        product_data = None
+        if product:
+            product_data = {
+                "id": product["id"],
+                "slug": product.get("slug", ""),
+                "title": product.get("title", ""),
+                "brand": product.get("brand", ""),
+                "priceCents": product.get("priceCents", 0),
+                "listPriceCents": product.get("listPriceCents"),
+                "mainImage": product.get("images", ["/placeholder-product.svg"])[0] if product.get("images") else "/placeholder-product.svg",
+                "ratingAvg": product.get("ratingAvg", 0),
+                "ratingCount": product.get("ratingCount", 0),
+            }
+
         sponsored_products.append({
             "campaignId": winner["id"],
             "productId": winner["productId"],
             "bidCents": winner["bidCents"],
             "secondPriceCents": second_price,
+            "product": product_data,
         })
 
         # Record impression
