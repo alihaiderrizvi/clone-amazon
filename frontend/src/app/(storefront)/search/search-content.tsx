@@ -7,9 +7,10 @@ import { ProductListItem, SearchResult } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Filter, ChevronDown, X, Star } from 'lucide-react';
-import { mockSearchResult, mockProducts, mockCategories } from '@/lib/api';
+import { mockSearchResult, mockProducts, mockCategories, serveAds, type SponsoredProduct } from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
-import { ProductCardSkeleton } from '@/components/storefront/product-card';
+import { ProductCardSkeleton, ProductCard } from '@/components/storefront/product-card';
+import { SponsoredProductCard } from '@/components/storefront/sponsored-product-card';
 
 type SortOption = 'relevance' | 'price_asc' | 'price_desc' | 'rating' | 'newest';
 
@@ -47,6 +48,7 @@ export function SearchContent() {
   // State
   const [isLoading, setIsLoading] = useState(true);
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
+  const [sponsoredProducts, setSponsoredProducts] = useState<Array<{ product: ProductListItem; campaignId: string }>>([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState<Set<string>>(
@@ -99,12 +101,45 @@ export function SearchContent() {
         if (response.ok) {
           const data = await response.json();
           setSearchResult(data);
+          
+          // Fetch sponsored products if we have a search query
+          if (query && page === 1) {
+            try {
+              const adsResponse = await serveAds(query, 2);
+              if (adsResponse.sponsoredProducts.length > 0) {
+                // Fetch product details for sponsored products
+                const sponsoredWithDetails = await Promise.all(
+                  adsResponse.sponsoredProducts.map(async (sp: SponsoredProduct) => {
+                    const productRes = await fetch(`${apiUrl}/products?id=${sp.productId}`);
+                    if (productRes.ok) {
+                      const productData = await productRes.json();
+                      // Find the product by ID in the response
+                      const product = productData.products?.find((p: ProductListItem) => p.id === sp.productId);
+                      if (product) {
+                        return { product, campaignId: sp.campaignId };
+                      }
+                    }
+                    return null;
+                  })
+                );
+                setSponsoredProducts(sponsoredWithDetails.filter(Boolean) as Array<{ product: ProductListItem; campaignId: string }>);
+              } else {
+                setSponsoredProducts([]);
+              }
+            } catch (err) {
+              console.error('Failed to fetch sponsored products:', err);
+              setSponsoredProducts([]);
+            }
+          } else {
+            setSponsoredProducts([]);
+          }
         } else {
           throw new Error('API not available');
         }
       } catch {
         // Fallback to mock data with client-side filtering
         let filteredProducts = [...mockProducts];
+        setSponsoredProducts([]);
 
         // Filter by search query
         if (query) {
