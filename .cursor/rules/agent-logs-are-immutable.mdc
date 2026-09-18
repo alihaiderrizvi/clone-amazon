@@ -1,0 +1,12 @@
+---
+description: Protects the automatic prompt/response capture in .agent-logs/
+alwaysApply: true
+---
+
+`.agent-logs/` is written automatically by the hooks in `.cursor/hooks.json`
+(`beforeSubmitPrompt`, `afterAgentResponse`, `stop` -> `.cursor/hooks/capture.py`).
+
+- Never edit, reformat, summarise, truncate, or delete an existing entry in `.agent-logs/`.
+  Wrong answers and dead ends stay in the log exactly as they were recorded.
+- Never add `.agent-logs/` to `.gitignore`. It is committed and ships with the repo.
+- Commit log files as you go, alongside the code from the same turn, not in one dump at the end.

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": ".cursor/hooks/capture.py",
+        "timeout": 15
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": ".cursor/hooks/capture.py",
+        "timeout": 15
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/capture.py",
+        "timeout": 15
+      }
+    ]
+  }
+}
