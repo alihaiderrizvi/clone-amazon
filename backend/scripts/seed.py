@@ -931,11 +931,11 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
     ],
     "apple-airpods-pro-2nd-gen": [
         "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1606220588913-b3dacb67b27b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80",
     ],
     "samsung-65-inch-4k-smart-tv": [
         "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1461151073143-1d46b5cc8d58?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1461151304267-38535e780c79?auto=format&fit=crop&w=800&q=80",
     ],
     "iphone-15-pro-max-256gb": [
         "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80",
@@ -950,8 +950,8 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
         "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
     ],
     "macbook-pro-14-m3-pro": [
-        "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=1200&q=80",
     ],
     "dell-xps-15-laptop": [
         "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
@@ -959,7 +959,7 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
     ],
     "logitech-mx-master-3s": [
         "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1615663245857-ac98b6a443ba?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
     ],
     "mechanical-gaming-keyboard": [
         "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80",
@@ -970,12 +970,12 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
         "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80",
     ],
     "webcam-4k-streaming": [
-        "https://images.unsplash.com/photo-1587826080692-f439cd7437ea?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1614624536985-1b1cdabe6ce0?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80",
     ],
     "instant-pot-duo-7-in-1": [
-        "https://images.unsplash.com/photo-1585515320310-259814ec7bae?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1565452344518-47faca79dc69?auto=format&fit=crop&w=800&q=80",
     ],
     "dyson-v15-detect-vacuum": [
         "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
@@ -983,11 +983,11 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
     ],
     "ninja-professional-blender": [
         "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1616781678220-4dbe10ee3e2f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&q=80",
     ],
     "keurig-k-elite-coffee-maker": [
         "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1495474470461-4c25c36a4230?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80",
     ],
     "philips-smart-led-bulbs-4pack": [
         "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&w=800&q=80",
@@ -998,8 +998,9 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
         "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
     ],
     "nespresso-vertuo-plus-coffee-machine": [
-        "https://images.unsplash.com/photo-1495474470461-4c25c36a4230?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1511920170033-91ade4c306ad?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80",
     ],
     "atomic-habits-james-clear": [
         "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
@@ -1018,11 +1019,11 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
         "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
     ],
     "thinking-fast-and-slow": [
-        "https://images.unsplash.com/photo-14565130808-af0da638bb0b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
     ],
     "where-the-crawdads-sing": [
-        "https://images.unsplash.com/photo-1476275461138-ce0fd9bb6c19?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
     ],
     "levis-501-original-jeans": [
@@ -1043,10 +1044,10 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
     ],
     "carhartt-hooded-sweatshirt": [
         "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1578768079052-aa76e52c5dcb?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
     ],
     "north-face-thermoball-jacket": [
-        "https://images.unsplash.com/photo-1539533113208-f6df8cc8b7ad?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80",
     ],
     "yeti-rambler-30oz-tumbler": [
@@ -1075,14 +1076,14 @@ PRODUCT_IMAGES: dict[str, list[str]] = {
     ],
     "dyson-airwrap-complete": [
         "https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1527799820371-d7a8dc0b3d3f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=800&q=80",
     ],
     "olaplex-no3-hair-perfector": [
-        "https://images.unsplash.com/photo-1527799820371-d7a8dc0b3d3f?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1519415511915-27ee50256b43?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=800&q=80",
     ],
     "cetaphil-gentle-skin-cleanser": [
-        "https://images.unsplash.com/photo-1556228720-1958f25a2f1e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80",
     ],
     "maybelline-sky-high-mascara": [
@@ -1128,7 +1129,7 @@ CATEGORY_FALLBACK_IMAGES = {
         "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80"
     ],
     "cat_computers": [
-        "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&w=800&q=80"
+        "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=800&q=80"
     ],
     "cat_home": [
         "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80"
@@ -1140,7 +1141,7 @@ CATEGORY_FALLBACK_IMAGES = {
         "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80"
     ],
     "cat_sports": [
-        "https://images.unsplash.com/photo-1517649763962-0c623066027b?auto=format&fit=crop&w=800&q=80"
+        "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=800&q=80"
     ],
     "cat_beauty": [
         "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80"

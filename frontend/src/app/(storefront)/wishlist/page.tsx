@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Heart, ShoppingCart, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,6 +9,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useCart } from '@/hooks/use-cart';
 import { formatPrice } from '@/lib/utils';
 import { getProductImage } from '@/lib/api-url';
+import { ProductImage } from '@/components/ui/product-image';
 import { Wishlist, WishlistItem } from '@/types';
 import * as api from '@/lib/api';
 
@@ -139,7 +139,7 @@ export default function WishlistPage() {
           <Card key={item.id} className="overflow-hidden">
             <Link href={`/product/${item.product.slug}`}>
               <div className="aspect-square relative bg-gray-50">
-                <Image
+                <ProductImage
                   src={getProductImage(item.product)}
                   alt={item.product.title}
                   fill

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Star, ShoppingCart, Heart, Share2, MapPin, Truck, Shield, RotateCcw, Check, AlertTriangle, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,7 @@ import { useCart } from '@/hooks/use-cart';
 import { Product } from '@/types';
 import { mockProduct } from '@/lib/api';
 import { getApiUrl } from '@/lib/api-url';
+import { ProductImage } from '@/components/ui/product-image';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -178,7 +178,7 @@ export default function ProductDetailPage() {
           <div className="lg:sticky lg:top-24">
             {/* Main Image */}
             <div className="relative aspect-square bg-white rounded-lg border border-gray-200 mb-4 overflow-hidden group">
-              <Image
+              <ProductImage
                 src={product.images?.[selectedImage] || '/placeholder-product.svg'}
                 alt={product.title}
                 fill
@@ -231,7 +231,7 @@ export default function ProductDetailPage() {
                       selectedImage === index ? 'border-[#FF9900]' : 'border-gray-200 hover:border-gray-400'
                     }`}
                   >
-                    <Image
+                    <ProductImage
                       src={image || '/placeholder-product.svg'}
                       alt={`${product.title} - Image ${index + 1}`}
                       width={64}
@@ -551,7 +551,7 @@ export default function ProductDetailPage() {
             <X className="h-8 w-8" />
           </button>
           <div className="relative w-full h-full max-w-4xl max-h-[90vh] m-4">
-            <Image
+            <ProductImage
               src={product.images?.[selectedImage] || '/placeholder-product.svg'}
               alt={product.title}
               fill

@@ -1,12 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { ProductListItem } from '@/types';
 import { formatPrice, calculateDiscount } from '@/lib/utils';
 import { getProductImage } from '@/lib/api-url';
 import { recordAdClick } from '@/lib/api';
+import { ProductImage } from '@/components/ui/product-image';
 
 interface SponsoredProductCardProps {
   product: ProductListItem;
@@ -50,7 +50,7 @@ export function SponsoredProductCard({ product, campaignId, query }: SponsoredPr
 
       {/* Product Image */}
       <div className="relative aspect-square mb-3 overflow-hidden rounded bg-gray-50">
-        <Image
+        <ProductImage
           src={getProductImage(product)}
           alt={product.title}
           fill

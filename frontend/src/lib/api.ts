@@ -307,7 +307,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'StreamPro',
     priceCents: 9999,
     listPriceCents: 14999,
-    mainImage: 'https://images.unsplash.com/photo-1587826080692-f439cd7437ea?auto=format&fit=crop&w=800&q=80',
+    mainImage: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.5,
     ratingCount: 892,
   },

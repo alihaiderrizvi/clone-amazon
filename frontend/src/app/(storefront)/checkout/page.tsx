@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, Lock, CheckCircle, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,7 @@ import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import { formatPrice } from '@/lib/utils';
 import { getProductImage } from '@/lib/api-url';
+import { ProductImage } from '@/components/ui/product-image';
 import { Address, CreateOrderData } from '@/types';
 import * as api from '@/lib/api';
 
@@ -390,7 +390,7 @@ export default function CheckoutPage() {
                     <div className="space-y-4">
                       {items.map((item) => (
                         <div key={item.productId} className="flex gap-4">
-                          <Image
+                          <ProductImage
                             src={getProductImage(item.product)}
                             alt={item.product.title}
                             width={80}

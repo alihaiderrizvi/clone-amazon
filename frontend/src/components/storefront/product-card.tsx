@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { Star, ShoppingCart } from 'lucide-react';
 import { ProductListItem } from '@/types';
 import { formatPrice, calculateDiscount } from '@/lib/utils';
 import { getProductImage } from '@/lib/api-url';
 import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
+import { ProductImage } from '@/components/ui/product-image';
 
 interface ProductCardProps {
   product: ProductListItem;
@@ -35,7 +35,7 @@ export function ProductCard({ product, compact = false, showAddToCart = false }:
       >
         {/* Product Image */}
         <div className="relative aspect-square mb-2 overflow-hidden rounded bg-gray-50">
-          <Image
+          <ProductImage
             src={getProductImage(product)}
             alt={product.title}
             fill
@@ -93,7 +93,7 @@ export function ProductCard({ product, compact = false, showAddToCart = false }:
       <Link href={`/product/${product.slug}`}>
         {/* Product Image */}
         <div className="relative aspect-square mb-3 overflow-hidden rounded bg-gray-50">
-          <Image
+          <ProductImage
             src={getProductImage(product)}
             alt={product.title}
             fill

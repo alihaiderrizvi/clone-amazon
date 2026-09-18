@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Trash2, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,6 +9,7 @@ import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import { formatPrice } from '@/lib/utils';
 import { getProductImage } from '@/lib/api-url';
+import { ProductImage } from '@/components/ui/product-image';
 import * as api from '@/lib/api';
 
 export default function CartPage() {
@@ -91,7 +91,7 @@ export default function CartPage() {
                     {/* Product Image */}
                     <div className="flex-shrink-0">
                       <Link href={`/product/${item.product.slug}`}>
-                        <Image
+                        <ProductImage
                           src={getProductImage(item.product)}
                           alt={item.product.title}
                           width={180}
