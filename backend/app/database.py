@@ -4,6 +4,7 @@ import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+import certifi
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 from app.config import get_settings
@@ -21,7 +22,10 @@ async def connect_to_mongodb() -> None:
     settings = get_settings()
 
     try:
-        _client = AsyncIOMotorClient(settings.mongodb_uri)
+        _client = AsyncIOMotorClient(
+            settings.mongodb_uri,
+            tlsCAFile=certifi.where(),
+        )
         _db = _client.get_default_database()
 
         # Verify connection
