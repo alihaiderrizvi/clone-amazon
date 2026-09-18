@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductListItem } from '@/types';
 import { ProductRail, ProductRailSkeleton } from './product-rail';
 import { mockProducts } from '@/lib/api';
+import { getApiUrl, withMainImage } from '@/lib/api-url';
 
 // Hero banner slides
 const heroSlides = [
@@ -73,10 +74,10 @@ export function HomeContent() {
       setIsLoading(true);
       try {
         // Try to fetch from API
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/products?limit=24`);
+        const response = await fetch(`${getApiUrl()}/products?limit=24`);
         if (response.ok) {
           const data = await response.json();
-          const products = data.data || data.products || data;
+          const products = (data.data || data.products || data).map(withMainImage);
           
           // Split products into different rails
           setProductRails([

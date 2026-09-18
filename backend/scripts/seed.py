@@ -922,6 +922,243 @@ PRODUCTS_DATA = {
 }
 
 
+# Real product photos from Unsplash (stable, hotlinkable)
+PRODUCT_IMAGES: dict[str, list[str]] = {
+    "wireless-noise-cancelling-headphones": [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80",
+    ],
+    "apple-airpods-pro-2nd-gen": [
+        "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1606220588913-b3dacb67b27b?auto=format&fit=crop&w=800&q=80",
+    ],
+    "samsung-65-inch-4k-smart-tv": [
+        "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1461151073143-1d46b5cc8d58?auto=format&fit=crop&w=800&q=80",
+    ],
+    "iphone-15-pro-max-256gb": [
+        "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
+    ],
+    "jbl-flip-6-portable-speaker": [
+        "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
+    ],
+    "kindle-paperwhite-11th-gen": [
+        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
+    ],
+    "macbook-pro-14-m3-pro": [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&w=1200&q=80",
+    ],
+    "dell-xps-15-laptop": [
+        "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1484788984921-03950022c9ef?auto=format&fit=crop&w=800&q=80",
+    ],
+    "logitech-mx-master-3s": [
+        "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1615663245857-ac98b6a443ba?auto=format&fit=crop&w=800&q=80",
+    ],
+    "mechanical-gaming-keyboard": [
+        "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=800&q=80",
+    ],
+    "samsung-32-curved-monitor": [
+        "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80",
+    ],
+    "webcam-4k-streaming": [
+        "https://images.unsplash.com/photo-1587826080692-f439cd7437ea?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1614624536985-1b1cdabe6ce0?auto=format&fit=crop&w=800&q=80",
+    ],
+    "instant-pot-duo-7-in-1": [
+        "https://images.unsplash.com/photo-1585515320310-259814ec7bae?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80",
+    ],
+    "dyson-v15-detect-vacuum": [
+        "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=800&q=80",
+    ],
+    "ninja-professional-blender": [
+        "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1616781678220-4dbe10ee3e2f?auto=format&fit=crop&w=800&q=80",
+    ],
+    "keurig-k-elite-coffee-maker": [
+        "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1495474470461-4c25c36a4230?auto=format&fit=crop&w=800&q=80",
+    ],
+    "philips-smart-led-bulbs-4pack": [
+        "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80",
+    ],
+    "roomba-j7-robot-vacuum": [
+        "https://images.unsplash.com/photo-1603618090561-412154b4bd1b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
+    ],
+    "nespresso-vertuo-plus-coffee-machine": [
+        "https://images.unsplash.com/photo-1495474470461-4c25c36a4230?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1511920170033-91ade4c306ad?auto=format&fit=crop&w=800&q=80",
+    ],
+    "atomic-habits-james-clear": [
+        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
+    ],
+    "project-hail-mary-andy-weir": [
+        "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=800&q=80",
+    ],
+    "the-psychology-of-money": [
+        "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+    ],
+    "fourth-wing-rebecca-yarros": [
+        "https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
+    ],
+    "thinking-fast-and-slow": [
+        "https://images.unsplash.com/photo-14565130808-af0da638bb0b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
+    ],
+    "where-the-crawdads-sing": [
+        "https://images.unsplash.com/photo-1476275461138-ce0fd9bb6c19?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
+    ],
+    "levis-501-original-jeans": [
+        "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
+    ],
+    "nike-air-max-270-mens": [
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80",
+    ],
+    "patagonia-better-sweater-fleece": [
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80",
+    ],
+    "adidas-ultraboost-22-running": [
+        "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+    ],
+    "carhartt-hooded-sweatshirt": [
+        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1578768079052-aa76e52c5dcb?auto=format&fit=crop&w=800&q=80",
+    ],
+    "north-face-thermoball-jacket": [
+        "https://images.unsplash.com/photo-1539533113208-f6df8cc8b7ad?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80",
+    ],
+    "yeti-rambler-30oz-tumbler": [
+        "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?auto=format&fit=crop&w=800&q=80",
+    ],
+    "fitbit-charge-6-fitness-tracker": [
+        "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&w=800&q=80",
+    ],
+    "coleman-4-person-dome-tent": [
+        "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80",
+    ],
+    "hydro-flask-32oz-water-bottle": [
+        "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80",
+    ],
+    "garmin-forerunner-265-gps": [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=800&q=80",
+    ],
+    "yoga-mat-extra-thick": [
+        "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+    ],
+    "dyson-airwrap-complete": [
+        "https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1527799820371-d7a8dc0b3d3f?auto=format&fit=crop&w=800&q=80",
+    ],
+    "olaplex-no3-hair-perfector": [
+        "https://images.unsplash.com/photo-1527799820371-d7a8dc0b3d3f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1519415511915-27ee50256b43?auto=format&fit=crop&w=800&q=80",
+    ],
+    "cetaphil-gentle-skin-cleanser": [
+        "https://images.unsplash.com/photo-1556228720-1958f25a2f1e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80",
+    ],
+    "maybelline-sky-high-mascara": [
+        "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80",
+    ],
+    "cerave-moisturizing-cream": [
+        "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
+    ],
+    "the-ordinary-niacinamide-serum": [
+        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=800&q=80",
+    ],
+    "lego-star-wars-millennium-falcon": [
+        "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&w=800&q=80",
+    ],
+    "nintendo-switch-oled-model": [
+        "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=800&q=80",
+    ],
+    "monopoly-classic-board-game": [
+        "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1632501641765-e568d28b0015?auto=format&fit=crop&w=800&q=80",
+    ],
+    "playstation-5-console": [
+        "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=800&q=80",
+    ],
+    "magna-tiles-100-piece-set": [
+        "https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=800&q=80",
+    ],
+    "hot-wheels-ultimate-garage": [
+        "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
+    ],
+}
+
+CATEGORY_FALLBACK_IMAGES = {
+    "cat_electronics": [
+        "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_computers": [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_home": [
+        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_books": [
+        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_clothing": [
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_sports": [
+        "https://images.unsplash.com/photo-1517649763962-0c623066027b?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_beauty": [
+        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80"
+    ],
+    "cat_toys": [
+        "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=800&q=80"
+    ],
+}
+
+
+def product_images_for(slug: str, category_id: str) -> list[str]:
+    """Return real product photos, falling back to a category image."""
+    return PRODUCT_IMAGES.get(slug) or CATEGORY_FALLBACK_IMAGES.get(
+        category_id,
+        ["https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80"],
+    )
+
+
 def generate_product_id(slug: str) -> str:
     """Generate a product ID from slug."""
     return f"prod_{slug.replace('-', '_')[:30]}"
@@ -941,13 +1178,7 @@ def generate_products() -> list[dict]:
             rating_count = random.randint(50, 15000)
             stock = random.choice([0, 3, 5, 8, 15, 25, 50, 100, 250, 500])  # Some low stock for urgency
             
-            # Generate image URLs using picsum.photos with seed for consistency
-            image_seed = abs(hash(prod["slug"])) % 10000
-            images = [
-                f"https://picsum.photos/seed/{image_seed}/400/400",
-                f"https://picsum.photos/seed/{image_seed + 1}/400/400",
-                f"https://picsum.photos/seed/{image_seed + 2}/400/400",
-            ]
+            images = product_images_for(prod["slug"], category_id)
             
             product = {
                 "id": product_id,
@@ -974,7 +1205,28 @@ def generate_products() -> list[dict]:
     return products
 
 
-async def seed_database():
+async def update_product_images_only():
+    """Patch image URLs on existing products without wiping other data."""
+    settings = get_settings()
+    print(f"Connecting to MongoDB: {settings.mongodb_uri}")
+    client = AsyncIOMotorClient(settings.mongodb_uri, tlsCAFile=certifi.where())
+    db = client.get_default_database()
+
+    updated = 0
+    async for product in db.products.find({}):
+        slug = product.get("slug")
+        category_id = product.get("categoryId", "")
+        if not slug:
+            continue
+        images = product_images_for(slug, category_id)
+        await db.products.update_one({"_id": product["_id"]}, {"$set": {"images": images}})
+        updated += 1
+
+    print(f"Updated images on {updated} products.")
+    client.close()
+
+
+async def seed_database(skip_confirm: bool = False):
     """Seed the database with demo data."""
     settings = get_settings()
     
@@ -988,10 +1240,11 @@ async def seed_database():
     print("   - categories")
     print("   - sellers")
     
-    response = input("\nProceed? (y/N): ").strip().lower()
-    if response != "y":
-        print("Aborted.")
-        return
+    if not skip_confirm:
+        response = input("\nProceed? (y/N): ").strip().lower()
+        if response != "y":
+            print("Aborted.")
+            return
     
     # Clear existing data
     print("\n🗑️  Clearing existing data...")
@@ -1040,4 +1293,18 @@ async def seed_database():
 
 
 if __name__ == "__main__":
-    asyncio.run(seed_database())
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Seed the Amazon Clone database")
+    parser.add_argument(
+        "--images-only",
+        action="store_true",
+        help="Update product image URLs without wiping other data",
+    )
+    parser.add_argument("--yes", action="store_true", help="Skip confirmation prompt")
+    args = parser.parse_args()
+
+    if args.images_only:
+        asyncio.run(update_product_images_only())
+    else:
+        asyncio.run(seed_database(skip_confirm=args.yes))

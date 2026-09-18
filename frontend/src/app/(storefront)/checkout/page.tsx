@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import { formatPrice } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import { Address, CreateOrderData } from '@/types';
 import * as api from '@/lib/api';
 
@@ -390,7 +391,7 @@ export default function CheckoutPage() {
                       {items.map((item) => (
                         <div key={item.productId} className="flex gap-4">
                           <Image
-                            src={item.product.mainImage || '/placeholder-product.svg'}
+                            src={getProductImage(item.product)}
                             alt={item.product.title}
                             width={80}
                             height={80}

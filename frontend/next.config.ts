@@ -1,16 +1,27 @@
 import type { NextConfig } from "next";
 
+const backendUrl = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(
+  /\/$/,
+  ""
+);
+
 const nextConfig: NextConfig = {
   images: {
-    // Allow images from various sources during development
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "picsum.photos" },
+      { protocol: "https", hostname: "**.supabase.co" },
     ],
-    // Placeholder image for products
-    unoptimized: process.env.NODE_ENV === 'development',
+    // Render's image optimizer often fails on third-party CDNs
+    unoptimized: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/backend/:path*",
+        destination: `${backendUrl}/:path*`,
+      },
+    ];
   },
   // Experimental features
   experimental: {

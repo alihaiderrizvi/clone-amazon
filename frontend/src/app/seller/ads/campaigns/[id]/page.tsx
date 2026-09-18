@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatPrice } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import {
   getCampaign,
   updateCampaign,
@@ -203,7 +204,7 @@ export default function CampaignDetailPage({ params }: PageProps) {
             <div className="flex gap-4">
               <div className="relative w-20 h-20 flex-shrink-0">
                 <Image
-                  src={product.mainImage || '/placeholder-product.svg'}
+                  src={getProductImage(product)}
                   alt={product.title}
                   fill
                   className="object-contain rounded"

@@ -20,8 +20,7 @@ import {
   SellerListingsResponse,
   SellerStats,
 } from '@/types';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+import { getApiUrl } from './api-url';
 
 type RequestOptions = {
   headers?: Record<string, string>;
@@ -54,7 +53,7 @@ class ApiClient {
   ): Promise<T> {
     const authHeader = await this.getAuthHeader();
     
-    const response = await fetch(`${this.baseUrl}${path}`, {
+        const response = await fetch(`${getApiUrl()}${path}`, {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +98,7 @@ class ApiClient {
   }
 }
 
-export const api = new ApiClient(API_URL);
+export const api = new ApiClient('');
 
 // ============================================================================
 // Product API Functions
@@ -233,7 +232,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'AudioTech',
     priceCents: 7999,
     listPriceCents: 12999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.5,
     ratingCount: 2341,
   },
@@ -244,7 +243,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'FitGear',
     priceCents: 4999,
     listPriceCents: 6999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.2,
     ratingCount: 1892,
   },
@@ -254,7 +253,7 @@ export const mockProducts: ProductListItem[] = [
     title: 'Portable Bluetooth Speaker Waterproof with 24Hr Playtime',
     brand: 'SoundWave',
     priceCents: 3499,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.7,
     ratingCount: 5621,
   },
@@ -265,7 +264,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'TechConnect',
     priceCents: 2999,
     listPriceCents: 4999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1625948515291-69613efd103f?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.4,
     ratingCount: 987,
   },
@@ -276,7 +275,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'GameMaster',
     priceCents: 8999,
     listPriceCents: 11999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.6,
     ratingCount: 3421,
   },
@@ -287,7 +286,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'GameMaster',
     priceCents: 5999,
     listPriceCents: 7999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.8,
     ratingCount: 2156,
   },
@@ -297,7 +296,7 @@ export const mockProducts: ProductListItem[] = [
     title: 'Laptop Stand Adjustable Aluminum Ergonomic for 10-17 inch',
     brand: 'ErgoDesk',
     priceCents: 3999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.3,
     ratingCount: 1567,
   },
@@ -308,7 +307,7 @@ export const mockProducts: ProductListItem[] = [
     brand: 'StreamPro',
     priceCents: 9999,
     listPriceCents: 14999,
-    mainImage: '/placeholder-product.svg',
+    mainImage: 'https://images.unsplash.com/photo-1587826080692-f439cd7437ea?auto=format&fit=crop&w=800&q=80',
     ratingAvg: 4.5,
     ratingCount: 892,
   },
@@ -363,7 +362,11 @@ export const mockProduct: Product = {
   categoryId: 'electronics',
   priceCents: 7999,
   listPriceCents: 12999,
-  images: ['/placeholder-product.svg', '/placeholder-product.svg', '/placeholder-product.svg', '/placeholder-product.svg'],
+  images: [
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80',
+  ],
   bullets: [
     'Industry-leading Active Noise Cancellation technology',
     '40 hours of battery life with quick charging (10 min = 5 hours)',

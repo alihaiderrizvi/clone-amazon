@@ -11,6 +11,7 @@ import { formatPrice, calculateDiscount } from '@/lib/utils';
 import { useCart } from '@/hooks/use-cart';
 import { Product } from '@/types';
 import { mockProduct } from '@/lib/api';
+import { getApiUrl } from '@/lib/api-url';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -35,12 +36,11 @@ export default function ProductDetailPage() {
       setError(null);
 
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/products/${slug}`);
+        const response = await fetch(`${getApiUrl()}/products/${slug}`);
         
         if (response.ok) {
           const data = await response.json();
-          setProduct(data);
+          setProduct(data.product ?? data);
         } else if (response.status === 404) {
           // Try mock data if API returns 404
           if (mockProduct.slug === slug || slug === 'wireless-bluetooth-headphones') {
@@ -110,7 +110,7 @@ export default function ProductDetailPage() {
       brand: product.brand,
       priceCents: product.priceCents,
       listPriceCents: product.listPriceCents,
-      mainImage: product.images[0],
+      mainImage: product.images?.[0],
       ratingAvg: product.ratingAvg,
       ratingCount: product.ratingCount,
     }, quantity);
@@ -130,7 +130,7 @@ export default function ProductDetailPage() {
       brand: product.brand,
       priceCents: product.priceCents,
       listPriceCents: product.listPriceCents,
-      mainImage: product.images[0],
+      mainImage: product.images?.[0],
       ratingAvg: product.ratingAvg,
       ratingCount: product.ratingCount,
     }, quantity);
@@ -138,11 +138,12 @@ export default function ProductDetailPage() {
   };
 
   const nextImage = () => {
-    setSelectedImage((prev) => (prev + 1) % product.images.length);
+    setSelectedImage((prev) => (prev + 1) % (product.images?.length || 1));
   };
 
   const prevImage = () => {
-    setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+    const count = product.images?.length || 1;
+    setSelectedImage((prev) => (prev - 1 + count) % count);
   };
 
   // Stock status helpers
@@ -178,7 +179,7 @@ export default function ProductDetailPage() {
             {/* Main Image */}
             <div className="relative aspect-square bg-white rounded-lg border border-gray-200 mb-4 overflow-hidden group">
               <Image
-                src={product.images[selectedImage] || '/placeholder-product.svg'}
+                src={product.images?.[selectedImage] || '/placeholder-product.svg'}
                 alt={product.title}
                 fill
                 className="object-contain p-4 cursor-zoom-in transition-transform group-hover:scale-105"
@@ -193,7 +194,7 @@ export default function ProductDetailPage() {
               )}
 
               {/* Image Navigation */}
-              {product.images.length > 1 && (
+              {(product.images?.length ?? 0) > 1 && (
                 <>
                   <button
                     onClick={prevImage}
@@ -220,9 +221,9 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Thumbnails */}
-            {product.images.length > 1 && (
+            {(product.images?.length ?? 0) > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
-                {product.images.map((image, index) => (
+                {(product.images || []).map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -551,13 +552,13 @@ export default function ProductDetailPage() {
           </button>
           <div className="relative w-full h-full max-w-4xl max-h-[90vh] m-4">
             <Image
-              src={product.images[selectedImage] || '/placeholder-product.svg'}
+              src={product.images?.[selectedImage] || '/placeholder-product.svg'}
               alt={product.title}
               fill
               className="object-contain"
             />
           </div>
-          {product.images.length > 1 && (
+          {(product.images?.length ?? 0) > 1 && (
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); prevImage(); }}

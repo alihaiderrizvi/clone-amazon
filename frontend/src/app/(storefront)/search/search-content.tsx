@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Filter, ChevronDown, X, Star } from 'lucide-react';
 import { mockSearchResult, mockProducts, mockCategories, serveAds, type SponsoredProduct } from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
+import { getApiUrl, withMainImage } from '@/lib/api-url';
 import { ProductCardSkeleton, ProductCard } from '@/components/storefront/product-card';
 import { SponsoredProductCard } from '@/components/storefront/sponsored-product-card';
 
@@ -83,7 +84,7 @@ export function SearchContent() {
       setIsLoading(true);
       
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+        const apiUrl = getApiUrl();
         const params = new URLSearchParams();
         
         if (query) params.set('q', query);
@@ -100,7 +101,10 @@ export function SearchContent() {
         
         if (response.ok) {
           const data = await response.json();
-          setSearchResult(data);
+          setSearchResult({
+            ...data,
+            products: (data.products || []).map(withMainImage),
+          });
           
           // Fetch sponsored products if we have a search query
           if (query && page === 1) {

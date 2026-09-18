@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { ProductListItem } from '@/types';
 import { formatPrice, calculateDiscount } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import { recordAdClick } from '@/lib/api';
 
 interface SponsoredProductCardProps {
@@ -50,7 +51,7 @@ export function SponsoredProductCard({ product, campaignId, query }: SponsoredPr
       {/* Product Image */}
       <div className="relative aspect-square mb-3 overflow-hidden rounded bg-gray-50">
         <Image
-          src={product.mainImage || '/placeholder-product.svg'}
+          src={getProductImage(product)}
           alt={product.title}
           fill
           className="object-contain group-hover:scale-105 transition-transform p-2"

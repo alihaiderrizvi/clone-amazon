@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Star, ShoppingCart } from 'lucide-react';
 import { ProductListItem } from '@/types';
 import { formatPrice, calculateDiscount } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
 
@@ -35,7 +36,7 @@ export function ProductCard({ product, compact = false, showAddToCart = false }:
         {/* Product Image */}
         <div className="relative aspect-square mb-2 overflow-hidden rounded bg-gray-50">
           <Image
-            src={product.mainImage || '/placeholder-product.svg'}
+            src={getProductImage(product)}
             alt={product.title}
             fill
             className="object-contain group-hover:scale-105 transition-transform p-2"
@@ -93,7 +94,7 @@ export function ProductCard({ product, compact = false, showAddToCart = false }:
         {/* Product Image */}
         <div className="relative aspect-square mb-3 overflow-hidden rounded bg-gray-50">
           <Image
-            src={product.mainImage || '/placeholder-product.svg'}
+            src={getProductImage(product)}
             alt={product.title}
             fill
             className="object-contain group-hover:scale-105 transition-transform p-2"

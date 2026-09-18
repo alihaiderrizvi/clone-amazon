@@ -1,7 +1,7 @@
 """FastAPI application for Amazon Clone backend."""
 
 import logging
-import re
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -37,24 +37,14 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS Configuration
-# Allow localhost for development and Vercel for production
-ALLOWED_ORIGIN_PATTERNS = [
-    r"^http://localhost:\d+$",
-    r"^http://127\.0\.0\.1:\d+$",
-    r"^https://.*\.vercel\.app$",
-]
-
-
-def is_allowed_origin(origin: str) -> bool:
-    """Check if origin matches allowed patterns."""
-    return any(re.match(pattern, origin) for pattern in ALLOWED_ORIGIN_PATTERNS)
-
-
-# Using allow_origin_regex for pattern matching
+# CORS: local dev, Vercel, Render, plus any extra origins from CORS_ORIGINS
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"(http://localhost:\d+|http://127\.0\.0\.1:\d+|https://.*\.vercel\.app)",
+    allow_origins=[
+        "https://clone-amazon-cmu9.onrender.com",
+        *[origin.strip() for origin in os.getenv("CORS_ORIGINS", "").split(",") if origin.strip()],
+    ],
+    allow_origin_regex=r"(http://localhost:\d+|http://127\.0\.0\.1:\d+|https://.*\.vercel\.app|https://.*\.onrender\.com)",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

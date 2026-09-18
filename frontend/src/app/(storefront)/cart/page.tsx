@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import { formatPrice } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import * as api from '@/lib/api';
 
 export default function CartPage() {
@@ -91,7 +92,7 @@ export default function CartPage() {
                     <div className="flex-shrink-0">
                       <Link href={`/product/${item.product.slug}`}>
                         <Image
-                          src={item.product.mainImage || '/placeholder-product.svg'}
+                          src={getProductImage(item.product)}
                           alt={item.product.title}
                           width={180}
                           height={180}

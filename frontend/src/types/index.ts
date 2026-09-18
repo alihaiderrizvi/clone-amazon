@@ -38,7 +38,8 @@ export interface ProductListItem {
   brand: string;
   priceCents: number;
   listPriceCents?: number;
-  mainImage: string;
+  images?: string[];
+  mainImage?: string;
   ratingAvg: number;
   ratingCount: number;
 }

@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
 import { useCart } from '@/hooks/use-cart';
 import { formatPrice } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import { Wishlist, WishlistItem } from '@/types';
 import * as api from '@/lib/api';
 
@@ -139,7 +140,7 @@ export default function WishlistPage() {
             <Link href={`/product/${item.product.slug}`}>
               <div className="aspect-square relative bg-gray-50">
                 <Image
-                  src={item.product.mainImage || '/placeholder-product.svg'}
+                  src={getProductImage(item.product)}
                   alt={item.product.title}
                   fill
                   className="object-contain p-4"

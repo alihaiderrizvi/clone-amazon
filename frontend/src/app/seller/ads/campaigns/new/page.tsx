@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { formatPrice } from '@/lib/utils';
+import { getProductImage } from '@/lib/api-url';
 import { 
   getAdvertisingStatus, 
   getSellerProductsForAds, 
@@ -170,7 +171,7 @@ export default function NewCampaignPage() {
                   >
                     <div className="relative w-16 h-16 flex-shrink-0">
                       <Image
-                        src={product.mainImage || '/placeholder-product.svg'}
+                        src={getProductImage(product)}
                         alt={product.title}
                         fill
                         className="object-contain rounded"

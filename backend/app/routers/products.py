@@ -18,7 +18,7 @@ router = APIRouter()
 # Response Models
 # =============================================================================
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class PaginationMeta(BaseModel):
@@ -41,11 +41,18 @@ class ProductListItem(BaseModel):
     price_cents: int = Field(alias="priceCents")
     list_price_cents: int | None = Field(None, alias="listPriceCents")
     images: list[str] = []
+    main_image: str | None = Field(None, alias="mainImage")
     rating_avg: float | None = Field(None, alias="ratingAvg")
     rating_count: int = Field(0, alias="ratingCount")
     stock: int = 0
     
     model_config = {"populate_by_name": True}
+
+    @model_validator(mode="after")
+    def populate_main_image(self):
+        if not self.main_image and self.images:
+            self.main_image = self.images[0]
+        return self
 
 
 class ProductListResponse(BaseModel):
